@@ -12,7 +12,7 @@ const audio = $("audio");
 
 // ---------- catálogo ----------
 async function carregar() {
-  $("faixas").replaceChildren(...Array.from({ length: 3 }, () => h("li", { class: "esqueleto" })));
+  $("faixas").replaceChildren(...Array.from({ length: 4 }, () => h("div", { class: "esqueleto" })));
   try {
     const [c, b] = await Promise.all([api("/api/config"), api("/api/beats")]);
     estado.config = c.config;
@@ -21,15 +21,16 @@ async function carregar() {
     montarGeneros();
     filtrar();
   } catch (erro) {
-    $("faixas").replaceChildren(h("li", { class: "estado" },
-      h("strong", { text: "Não consegui carregar o catálogo" }), erro.message, h("br"),
-      h("button", { class: "btn btn-contorno", type: "button", text: "Tentar de novo", onclick: carregar })));
+    $("faixas").replaceChildren(h("div", { class: "estado" },
+      h("i", { class: "fas fa-plug", "aria-hidden": "true" }),
+      h("strong", { text: "Catálogo fora do ar" }), erro.message,
+      h("button", { class: "btn-hero", type: "button", text: "Tentar de novo", onclick: carregar })));
   }
 }
 
 function aplicarConfig() {
   const { promoAtiva, promoTexto, whatsapp } = estado.config;
-  $("promo").textContent = promoTexto || "";
+  $("promo").replaceChildren(h("i", { class: "fas fa-fire", "aria-hidden": "true" }), promoTexto || "", h("i", { class: "fas fa-fire", "aria-hidden": "true" }));
   $("promo").classList.toggle("hidden", !promoAtiva || !promoTexto);
   $("link-whats").href = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Salve KKona! Vim pelo site.")}`;
 }
@@ -52,24 +53,24 @@ function filtrar() {
 
 function desenharFaixas() {
   const alvo = $("faixas");
-  if (!estado.beats.length) {
-    alvo.replaceChildren(h("li", { class: "estado" }, h("strong", { text: "Catálogo em produção" }), "Novos beats chegando em breve."));
-    return;
-  }
-  if (!estado.visiveis.length) {
-    alvo.replaceChildren(h("li", { class: "estado" }, h("strong", { text: "Nenhum beat com esses filtros" }), "Tente outro gênero ou BPM."));
-    return;
-  }
+  const vazio = (icone, titulo, destaque, texto) => h("div", { class: "estado" },
+    h("i", { class: `fas ${icone}`, "aria-hidden": "true" }),
+    h("strong", {}, `${titulo} `, h("span", { text: destaque })), texto);
+  if (!estado.beats.length) return alvo.replaceChildren(vazio("fa-compact-disc", "Catálogo em", "produção", "Novos beats chegando em breve."));
+  if (!estado.visiveis.length) return alvo.replaceChildren(vazio("fa-filter", "Nada com esses", "filtros", "Tente outro gênero ou BPM."));
   alvo.replaceChildren(...estado.visiveis.map(b => {
-    const tocando = estado.atual?.id === b.id && !audio.paused;
-    return h("li", { class: `faixa ${estado.atual?.id === b.id ? "tocando" : ""}` },
-      h("img", { src: b.capa || "assets/img/Pierrot.jpeg", alt: "", loading: "lazy", width: 64, height: 64 }),
-      h("button", { type: "button", class: "btn-tocar", html: tocando ? icones.pause : icones.play, "aria-label": `${tocando ? "Pausar" : "Tocar"} ${b.titulo}`, onclick: () => tocar(b) }),
-      h("div", { class: "faixa-meta" },
-        h("div", { class: "faixa-titulo" }, b.titulo, tocando && h("span", { class: "ondas", "aria-hidden": "true" }, h("i"), h("i"), h("i"))),
-        h("div", { class: "tags" }, [b.genero, b.bpm && `${b.bpm} BPM`, b.tom].filter(Boolean).map(t => h("span", { text: t })))),
-      h("div", { class: "faixa-preco" }, b.precoBaseAntigo && h("s", { text: reais(b.precoBaseAntigo) }), h("span", { text: "a partir de " }), h("strong", { text: reais(b.precoBase) })),
-      h("button", { type: "button", class: "btn btn-roxo", text: "Licenciar", onclick: () => abrirPedido("licenca", b) }));
+    const atual = estado.atual?.id === b.id;
+    const tocando = atual && !audio.paused;
+    return h("article", { class: `beat-card ${atual ? "tocando" : ""}` },
+      h("button", { type: "button", class: "beat-capa", "aria-label": `${tocando ? "Pausar" : "Tocar"} ${b.titulo}`, onclick: () => tocar(b) },
+        h("img", { src: b.capa || "assets/img/Pierrot.jpeg", alt: "", loading: "lazy", width: 240, height: 240 }),
+        h("span", { class: "play-overlay", html: tocando ? icones.pause : icones.play })),
+      h("div", { class: "beat-info" },
+        h("h3", {}, h("span", { text: b.titulo }), tocando && h("span", { class: "ondas", "aria-hidden": "true" }, h("i"), h("i"), h("i"))),
+        h("div", { class: "beat-meta" }, h("span", { text: b.genero || "Beat" }), h("span", { text: [b.bpm && `${b.bpm} BPM`, b.tom].filter(Boolean).join(" · ") })),
+        h("div", { class: "beat-preco" }, b.precoBaseAntigo && h("s", { text: reais(b.precoBaseAntigo) }), h("strong", { text: reais(b.precoBase) }), h("small", { text: "a partir de" })),
+        h("button", { type: "button", class: "btn-licenciar", onclick: () => abrirPedido("licenca", b) },
+          h("i", { class: "fas fa-shopping-cart", "aria-hidden": "true" }), "Comprar licença")));
   }));
 }
 
@@ -148,6 +149,7 @@ function abrirPedido(tipo, beat = null) {
   estado.pedido = { tipo, beat };
   const [titulo, ajuda] = TEXTOS[tipo];
   $("t-pedido").textContent = titulo;
+  $("btn-pedir").textContent = beat ? "Comprar" : "Enviar pedido";
   $("pedido-ajuda").textContent = ajuda;
   $("form-pedido").reset();
   $("form-pedido").classList.remove("hidden");

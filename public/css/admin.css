@@ -77,3 +77,6 @@ dialog.janela-larga { width: min(720px, calc(100% - 24px)); }
   .grade-2 { grid-template-columns: 1fr; }
   .arquivo-campos { grid-template-columns: 1fr; }
 }
+.lista .esqueleto { aspect-ratio: auto; height: 84px; }
+.lista .estado { padding: 36px 20px; }
+.lista .estado strong { font-size: 1.1rem; }
