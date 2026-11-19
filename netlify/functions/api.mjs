@@ -20,11 +20,13 @@ async function conectar() {
   ]);
 
   // Capas e áudios enviados pelo painel ficam no Netlify Blobs (armazenamento de arquivos do próprio Netlify).
-  const store = getStore({ name: "midia", consistency: "strong" });
+  // O armazenamento só é aberto quando alguém envia ou pede um arquivo.
+  let loja = null;
+  const store = () => (loja ||= getStore({ name: "midia", consistency: "strong" }));
   const midia = {
-    put: (chave, bytes, tipo) => store.set(chave, bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), { metadata: { tipo } }),
+    put: (chave, bytes, tipo) => store().set(chave, bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), { metadata: { tipo } }),
     async get(chave) {
-      const r = await store.getWithMetadata(chave, { type: "arrayBuffer" });
+      const r = await store().getWithMetadata(chave, { type: "arrayBuffer" });
       return r ? { bytes: new Uint8Array(r.data), tipo: r.metadata?.tipo || "application/octet-stream" } : null;
     }
   };
@@ -36,6 +38,17 @@ async function conectar() {
     idStr: v => String(v),
     env: process.env
   });
+}
+
+// Explica o erro de conexão sem mostrar senha nem link do banco.
+function motivo(erro) {
+  const texto = `${erro?.name || ""} ${erro?.codeName || ""} ${erro?.message || ""}`;
+  if (/MONGODB_URI não configurada/.test(texto)) return "a variável MONGODB_URI não chegou na função (faça um novo deploy depois de criar as variáveis).";
+  if (/bad auth|Authentication failed|AuthenticationFailed/i.test(texto)) return "usuário ou senha do banco recusados (confira o MONGODB_URI).";
+  if (/not authorized|Unauthorized/i.test(texto)) return "o usuário do banco não tem permissão no banco MONGODB_DB (no Atlas, dê a ele \"Read and write to any database\").";
+  if (/Invalid scheme|URI must|Invalid connection string|querySrv|ENOTFOUND/i.test(texto)) return "o MONGODB_URI está com formato errado (sem aspas, começando com mongodb+srv://).";
+  if (/ServerSelection|timed out|ETIMEDOUT|ECONNREFUSED/i.test(texto)) return "o Atlas não respondeu (em Network Access, libere 0.0.0.0/0).";
+  return `${erro?.name || "Erro"} (${erro?.codeName || erro?.code || "sem código"})`;
 }
 
 export default async (request, context) => {
@@ -70,7 +83,7 @@ export default async (request, context) => {
     });
   } catch (erro) {
     console.error("Falha ao conectar:", erro);
-    return Response.json({ ok: false, message: "Sem conexão com o banco de dados." }, { status: 503 });
+    return Response.json({ ok: false, message: `Sem conexão com o banco de dados: ${motivo(erro)}` }, { status: 503 });
   }
 };
 
