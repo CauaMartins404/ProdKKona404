@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KKona404 · Beats &amp; Services</title>
+  <meta name="description" content="Beats, produção, mixagem, masterização e feats com KKona404.">
+  <meta name="theme-color" content="#08070b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/loja.css">
+  <script type="module" src="js/loja.js"></script>
+</head>
+<body>
+  <a class="pular" href="#catalogo">Pular para o catálogo</a>
+
+  <div class="promo hidden" id="promo" role="note"></div>
+
+  <header class="nav">
+    <div class="nav-in">
+      <a class="logo" href="#topo" aria-label="KKona404, início">KKONA<span>404</span></a>
+      <nav aria-label="Principal">
+        <ul class="nav-links">
+          <li><a href="#catalogo">Beats</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><button class="btn btn-contorno" type="button" data-pedido="contato">Contato</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="topo">
+      <div class="hero-in">
+        <p class="kicker">Produtor musical · Beats autorais</p>
+        <h1>KKONA<span>404</span></h1>
+        <p class="hero-sub">Produção // Mixagem // Masterização // Feats</p>
+        <div class="hero-acoes">
+          <a class="btn btn-roxo" href="#catalogo">Ouvir o catálogo</a>
+          <button class="btn btn-contorno" type="button" data-pedido="exclusivo">Encomendar beat exclusivo</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao" id="catalogo" aria-labelledby="t-catalogo">
+      <div class="secao-cabeca">
+        <div>
+          <p class="kicker">Licencie e lance hoje</p>
+          <h2 id="t-catalogo">Catálogo</h2>
+        </div>
+        <div class="filtros">
+          <label class="filtro">
+            <span>Buscar</span>
+            <input type="search" id="f-busca" placeholder="Nome do beat">
+          </label>
+          <label class="filtro">
+            <span>Gênero</span>
+            <select id="f-genero"><option value="">Todos</option></select>
+          </label>
+          <label class="filtro">
+            <span>BPM</span>
+            <select id="f-bpm">
+              <option value="">Qualquer</option>
+              <option value="lento">Lento (até 119)</option>
+              <option value="medio">Médio (120–140)</option>
+              <option value="rapido">Rápido (141+)</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <ol class="faixas" id="faixas" aria-live="polite"></ol>
+    </section>
+
+    <section class="secao" id="servicos" aria-labelledby="t-servicos">
+      <div class="secao-cabeca">
+        <div>
+          <p class="kicker">Do zero ao lançamento</p>
+          <h2 id="t-servicos">Serviços</h2>
+        </div>
+      </div>
+      <div class="servicos">
+        <article class="servico destaque">
+          <span class="selo">20% OFF</span>
+          <h3>Beat exclusivo</h3>
+          <p>Produção feita do zero, personalizada para a sua ideia.</p>
+          <div class="preco"><s>R$ 90 – R$ 150</s><strong>R$ 70</strong><small>a partir de</small></div>
+          <button class="btn btn-roxo" type="button" data-pedido="exclusivo">Encomendar</button>
+        </article>
+        <article class="servico">
+          <h3>Beat do catálogo</h3>
+          <p>Licença de uso para os beats do player acima, em MP3/WAV ou com stems.</p>
+          <div class="preco"><s>R$ 50</s><strong>R$ 40</strong><small>preço promocional</small></div>
+          <a class="btn btn-contorno" href="#catalogo">Ver beats</a>
+        </article>
+        <article class="servico">
+          <h3>Mix &amp; Master</h3>
+          <p>Até 3 stems inclusas. R$ 30 por stem adicional.</p>
+          <div class="preco"><s>R$ 65</s><strong>R$ 50</strong><small>por música</small></div>
+          <button class="btn btn-contorno" type="button" data-pedido="mixagem">Pedir orçamento</button>
+        </article>
+        <article class="servico">
+          <h3>Feat / Colab</h3>
+          <p>Participação ou colaboração em projetos selecionados.</p>
+          <div class="preco"><strong class="consulta">Sob consulta</strong><small>proposta pelo site</small></div>
+          <button class="btn btn-contorno" type="button" data-pedido="feat">Enviar proposta</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape-in">
+      <div class="logo">KKONA<span>404</span></div>
+      <div class="redes">
+        <a id="link-whats" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.youtube.com/@KKona404" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://open.spotify.com/intl-pt/artist/3M1NDLGM5w8itZTIrNldGP" target="_blank" rel="noopener">Spotify</a>
+        <button type="button" id="btn-termos">Termos de uso</button>
+      </div>
+      <p class="copy">© <span id="ano"></span> KKona404. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Player fixo -->
+  <div class="player" id="player" aria-label="Player">
+    <div class="player-info">
+      <img id="p-capa" src="assets/img/Pierrot.jpeg" alt="">
+      <div>
+        <strong id="p-titulo">Selecione um beat</strong>
+        <span id="p-sub">KKona404</span>
+      </div>
+    </div>
+    <div class="player-centro">
+      <div class="player-botoes">
+        <button type="button" id="p-ant" aria-label="Faixa anterior"></button>
+        <button type="button" id="p-play" class="p-play" aria-label="Tocar"></button>
+        <button type="button" id="p-prox" aria-label="Próxima faixa"></button>
+      </div>
+      <div class="player-tempo">
+        <span id="p-atual">0:00</span>
+        <input type="range" id="p-barra" min="0" max="1000" value="0" aria-label="Posição da música">
+        <span id="p-total">0:00</span>
+      </div>
+    </div>
+    <label class="player-volume">
+      <span class="sr">Volume</span>
+      <span id="p-vol-icone" aria-hidden="true"></span>
+      <input type="range" id="p-volume" min="0" max="1" step="0.05" value="0.8">
+    </label>
+    <audio id="audio" preload="none"></audio>
+  </div>
+
+  <!-- Termos -->
+  <dialog class="janela" id="dlg-termos" aria-labelledby="t-termos">
+    <div class="janela-corpo">
+      <h2 id="t-termos">Termos de uso</h2>
+      <div class="termos">
+        <h3>Termo de Uso – KKona404</h3>
+        <p>Este Termo de Uso regula o uso, acesso e licenciamento dos instrumentais ("beats") criados por <strong>KKona404</strong>, doravante denominado "Produtor", conforme as disposições da Lei nº 9.610/98 (Lei de Direitos Autorais).</p>
+        <h4>1. Propriedade intelectual</h4>
+        <p>Todos os beats disponibilizados neste catálogo são obras autorais do Produtor e estão integralmente protegidos por lei. A audição, visualização ou download não concede nenhum direito de uso comercial, reprodução, modificação, sincronização com imagens ou redistribuição.</p>
+        <h4>2. Restrições de uso</h4>
+        <p>É estritamente proibido, sem a devida aquisição de licença:</p>
+        <ul>
+          <li>Publicar os instrumentais em plataformas de streaming e monetização (Spotify, YouTube, Apple Music etc.);</li>
+          <li>Utilizar em obras audiovisuais (vídeos, filmes, comerciais) com qualquer finalidade comercial;</li>
+          <li>Revender, sublicenciar ou distribuir os instrumentais a terceiros;</li>
+          <li>Declarar autoria ou coautoria dos instrumentais;</li>
+          <li>Utilizar os beats para conteúdo ilícito, ofensivo ou discriminatório.</li>
+        </ul>
+        <p><strong>Qualquer uso fora desses termos será considerado violação de direitos autorais.</strong></p>
+        <h4>3. Licenciamento comercial</h4>
+        <p>Para utilizar qualquer beat de forma comercial é obrigatório obter uma licença específica (Beat Completo ou Stems) através deste site ou contato direto. O descumprimento destes termos implica em quebra contratual e infração legal.</p>
+        <h4>4. Consequências do uso indevido</h4>
+        <p>O uso sem licença poderá resultar em notificação extrajudicial, remoção de conteúdo (strike) e ações judiciais.</p>
+      </div>
+      <button class="btn btn-roxo btn-largo" type="button" id="btn-aceitar">Li e concordo</button>
+    </div>
+  </dialog>
+
+  <!-- Pedido (licença ou serviço) -->
+  <dialog class="janela" id="dlg-pedido" aria-labelledby="t-pedido">
+    <form class="janela-corpo" id="form-pedido" novalidate>
+      <header class="janela-topo">
+        <h2 id="t-pedido">Pedido</h2>
+        <button class="fechar" type="button" data-fechar aria-label="Fechar">×</button>
+      </header>
+
+      <div class="pedido-beat hidden" id="pedido-beat">
+        <img id="pb-capa" alt="">
+        <div>
+          <strong id="pb-titulo"></strong>
+          <div class="tags" id="pb-tags"></div>
+        </div>
+      </div>
+
+      <fieldset class="licencas hidden" id="licencas">
+        <legend>Escolha a licença</legend>
+        <label class="licenca">
+          <input type="radio" name="licenca" value="base" checked>
+          <span><strong>Beat completo</strong><small>MP3/WAV</small></span>
+          <span class="valor" id="v-base"></span>
+        </label>
+        <label class="licenca">
+          <input type="radio" name="licenca" value="stems">
+          <span><strong>Beat + stems</strong><small>Pistas separadas</small></span>
+          <span class="valor" id="v-stems"></span>
+        </label>
+      </fieldset>
+
+      <p class="ajuda" id="pedido-ajuda"></p>
+      <label class="campo"><span>Seu nome</span><input id="pd-nome" maxlength="80" autocomplete="name" required></label>
+      <label class="campo"><span>WhatsApp, Instagram ou e-mail</span><input id="pd-contato" maxlength="120" required></label>
+      <label class="campo"><span>Mensagem (opcional)</span><textarea id="pd-msg" rows="3" maxlength="1500" placeholder="Referências, prazo, ideia..."></textarea></label>
+      <label class="armadilha" aria-hidden="true">Site <input id="pd-site" tabindex="-1" autocomplete="off"></label>
+      <button class="btn btn-roxo btn-largo" type="submit" id="btn-pedir">Enviar pedido</button>
+      <p class="letra-miuda">Seu pedido fica registrado e o combinado final é feito pelo WhatsApp.</p>
+    </form>
+
+    <div class="janela-corpo sucesso hidden" id="pedido-ok">
+      <header class="janela-topo">
+        <h2>Pedido recebido!</h2>
+        <button class="fechar" type="button" data-fechar aria-label="Fechar">×</button>
+      </header>
+      <p>Seu código é <strong class="codigo" id="ok-codigo"></strong>. Guarde ele.</p>
+      <p class="ajuda">Para agilizar, mande uma mensagem já pronta no WhatsApp:</p>
+      <a class="btn btn-roxo btn-largo" id="ok-whats" href="#" target="_blank" rel="noopener">Continuar no WhatsApp</a>
+    </div>
+  </dialog>
+
+  <div class="avisos" id="avisos" popover="manual" aria-live="assertive"></div>
+</body>
+</html>

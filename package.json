@@ -1,0 +1,16 @@
+{
+  "name": "kkona404-loja",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Loja de beats e serviços do produtor KKona404 (Netlify + MongoDB Atlas).",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "demo": "node scripts/demo.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "mongodb": "^6.8.0"
+  }
+}
